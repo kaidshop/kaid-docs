@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@500;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Cuxial Official Tailwind & Theme Stylesheet -->
-  <link rel="stylesheet" href="cuxial.css">
+  <!-- KAID Theme Stylesheet -->
+  <link rel="stylesheet" href="kaid.css">
 
   <style>
     :root {
@@ -147,6 +147,14 @@
     .view-section.active {
       display: block;
     }
+
+    /* Script articles display */
+    .script-content {
+      display: none !important;
+    }
+    .script-content.active {
+      display: block !important;
+    }
   </style>
 </head>
 <body class="selection:bg-red-500/20 selection:text-red-300">
@@ -154,7 +162,7 @@
   <!-- TEBEX INTRO ANIMATION PRELOADER -->
   <div id="cx-preloader">
     <div class="cx-pre-center">
-      <img src="logo.jpg" class="cx-pre-logo" alt="KAID STORE">
+      <img src="logo.png" class="cx-pre-logo drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]" alt="KAID STORE">
       <div class="cx-pre-title">
         <div class="cx-pre-line"></div>
         <div class="cx-pre-name">KAID <span>DOCS</span></div>
@@ -180,7 +188,7 @@
         
         <!-- BRAND -->
         <a class="flex items-center gap-2.5 px-4 h-full group shrink-0" href="#home" onclick="showHomeView(); return false;">
-          <img alt="KAID" class="transition-transform duration-300 group-hover:scale-110 rounded-md object-cover" style="width:22px;height:22px;border:1px solid rgba(239,68,68,0.4)" src="logo.jpg">
+          <img alt="KAID" class="transition-transform duration-300 group-hover:scale-110 object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]" style="width:24px;height:24px;" src="logo.png">
           <span class="font-display font-black text-[14px] tracking-[2px]"><span style="color:var(--cx-red)">KAID</span><span class="text-white/40 mx-1 text-[10px]">/</span><span class="text-white/70 text-[12px]">DOCS</span></span>
         </a>
 
@@ -902,7 +910,7 @@ VALUES ('rope', 'Rope', 250, 0, 1);</code></pre>
   <footer class="relative pt-14 pb-8 border-t border-white/5">
     <div class="relative max-w-[1200px] mx-auto px-6 sm:px-10 flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-3">
-        <img alt="KAID" class="w-7 h-7 rounded-md object-cover border border-red-500/40" src="logo.jpg">
+        <img alt="KAID" class="w-8 h-8 object-contain drop-shadow-[0_0_10px_rgba(239,68,68,0.4)]" src="logo.png">
         <div class="leading-none">
           <div class="font-display text-sm font-bold tracking-[3px] text-chrome">KAID STORE</div>
           <div class="font-display text-[8px] font-medium tracking-[2px] uppercase text-white/30 mt-1">Documentación Oficial FiveM</div>
