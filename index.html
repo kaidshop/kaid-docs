@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="cuxial.css">
 
   <style>
-    /* Ensure font variables match Google Fonts perfectly */
     :root {
       --cx-bg: #06060b;
       --cx-bg-elevated: #0c0c14;
@@ -46,6 +45,13 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    /* Tab switching logic */
+    .script-content {
+      display: none;
+    }
+    .script-content.active {
+      display: block;
+    }
   </style>
 </head>
 <body class="selection:bg-red-500/20 selection:text-red-300">
@@ -64,16 +70,19 @@
         <!-- BRAND -->
         <a class="flex items-center gap-2.5 px-4 h-full group shrink-0" href="#">
           <img alt="KAID" class="transition-transform duration-300 group-hover:scale-110 rounded-md object-cover" style="width:22px;height:22px;border:1px solid rgba(239,68,68,0.4)" src="logo.jpg">
-          <span class="font-display font-black text-[14px] tracking-[2px]"><span style="color:var(--cx-red)">KAID</span><span class="text-white/40 mx-1 text-[10px]">/</span><span class="text-white/70 text-[12px]">DOCS</span></span>
+          <span class="font-display font-black text-[14px] tracking-[2px]"><span style="color:var(--cx-red)">KAID</span><span class="text-white/40 mx-1 text-[10px]">/</span><span class="text-white/70 text-[12px]">STORE</span></span>
         </a>
 
         <div class="h-5 border-l border-dashed" style="border-color:rgba(255,255,255,0.08)"></div>
 
-        <!-- NAV LINKS -->
-        <a class="px-4 h-full flex items-center font-display text-[9px] font-bold tracking-[2px] uppercase relative transition-all duration-300 text-white hover:text-white" href="#inicio">DOCS</a>
-        <a class="px-4 h-full flex items-center font-display text-[9px] font-bold tracking-[2px] uppercase relative transition-all duration-300 text-white/55 hover:text-white" href="#requisitos">REQUISITOS</a>
-        <a class="px-4 h-full flex items-center font-display text-[9px] font-bold tracking-[2px] uppercase relative transition-all duration-300 text-white/55 hover:text-white" href="#instalacion">INSTALACIÓN</a>
-        <a class="px-4 h-full flex items-center font-display text-[9px] font-bold tracking-[2px] uppercase relative transition-all duration-300 text-white/55 hover:text-white" href="#inventario">INVENTARIO</a>
+        <!-- CUXIAL STANDARD NAV ITEMS -->
+        <a class="px-4 h-full flex items-center font-display text-[9px] font-bold tracking-[2px] uppercase relative transition-all duration-300 text-white/55 hover:text-white" href="https://kaidstore.tebex.io" target="_blank">HOME</a>
+        <a class="px-4 h-full flex items-center font-display text-[9px] font-bold tracking-[2px] uppercase relative transition-all duration-300 text-white/55 hover:text-white" href="https://kaidstore.tebex.io" target="_blank">STORE</a>
+        <a class="px-4 h-full flex items-center font-display text-[9px] font-bold tracking-[2px] uppercase relative transition-all duration-300 text-white" href="#">
+          DOCS
+          <div class="absolute bottom-[6px] left-1/2 -translate-x-1/2 w-[3px] h-[3px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></div>
+        </a>
+        <a class="px-4 h-full flex items-center font-display text-[9px] font-bold tracking-[2px] uppercase relative transition-all duration-300 text-white/55 hover:text-white" href="https://discord.gg/ash64UmRj5" target="_blank">DISCORD</a>
 
         <div class="h-5 border-l border-dashed" style="border-color:rgba(255,255,255,0.08)"></div>
 
@@ -91,192 +100,203 @@
   <main class="relative min-h-screen text-white pt-24 pb-16">
     <div class="relative max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
       
+      <!-- BREADCRUMB -->
+      <div class="flex items-center gap-2 mb-6 text-[10px] font-display font-bold tracking-[1.5px] uppercase text-white/40">
+        <span>DOCS</span>
+        <span>/</span>
+        <span id="breadcrumb-title" class="text-white/80">KAID-ILLEGALSOG</span>
+      </div>
+
       <div class="flex gap-8 lg:gap-10">
 
-        <!-- LEFT SIDEBAR: SCRIPTS LIST -->
+        <!-- LEFT SIDEBAR: SCRIPTS LIST (EXACT CUXIAL STYLE) -->
         <aside class="hidden lg:block w-[210px] shrink-0">
           <div class="sticky top-28">
             <div class="font-display text-[8px] font-bold tracking-[2px] uppercase text-white/30 mb-3 px-3">
               Documentación
             </div>
             
-            <nav class="flex flex-col gap-0.5">
-              <!-- ONLY KAID-ILLEGALSOG ACTIVE -->
-              <a class="group flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2)" href="#inicio">
-                <span style="color:var(--cx-red)">
+            <nav class="flex flex-col gap-0.5" id="scripts-nav">
+              <!-- SCRIPT 1: kaid-illegalsog -->
+              <a href="#kaid-illegalsog" onclick="switchScript('kaid-illegalsog'); return false;" id="nav-kaid-illegalsog" class="group flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2)">
+                <span class="icon-holder" style="color:var(--cx-red)">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                 </span>
-                <span class="font-display text-[10px] font-bold tracking-[0.5px] leading-tight transition-colors" style="color:#fff">kaid-illegalsog</span>
+                <span class="font-display text-[10px] font-bold tracking-[0.5px] leading-tight transition-colors text-white">kaid-illegalsog</span>
+              </a>
+
+              <!-- SCRIPT 2: Kaidzona -->
+              <a href="#kaidzona" onclick="switchScript('kaidzona'); return false;" id="nav-kaidzona" class="group flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all" style="background:transparent;border:1px solid transparent">
+                <span class="icon-holder w-[5px] h-[5px] rounded-full shrink-0" style="background:rgba(255,255,255,0.25);box-shadow:none"></span>
+                <span class="font-display text-[10px] font-bold tracking-[0.5px] leading-tight transition-colors text-white/50 group-hover:text-white">Kaidzona</span>
               </a>
             </nav>
 
             <div class="font-display text-[8px] font-bold tracking-[2px] uppercase text-white/30 mt-6 mb-3 px-3">
               En esta página
             </div>
-            <nav class="flex flex-col gap-0.5">
-              <a href="#requisitos" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">1. Requisitos</a>
-              <a href="#instalacion" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">2 & 3. Instalación</a>
-              <a href="#inventario" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">4. Item de Cuerda</a>
-              <a href="#configuracion" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">5. Configuración</a>
-              <a href="#comandos" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">7. Comandos</a>
+            <!-- TOC FOR SCRIPT 1 -->
+            <nav class="flex flex-col gap-0.5" id="toc-kaid-illegalsog">
+              <a href="#req-illegalsog" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">1. Requisitos</a>
+              <a href="#inst-illegalsog" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">2 & 3. Instalación</a>
+              <a href="#item-illegalsog" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">4. Item de Cuerda</a>
+              <a href="#cfg-illegalsog" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">5. Configuración</a>
+              <a href="#cmd-illegalsog" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">7. Comandos</a>
+            </nav>
+            <!-- TOC FOR SCRIPT 2 -->
+            <nav class="flex flex-col gap-0.5" id="toc-kaidzona" style="display:none;">
+              <a href="#demo-zona" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">🎬 Demostración</a>
+              <a href="#features-zona" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">🛡️ Características</a>
+              <a href="#req-zona" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">⚙️ Requisitos</a>
+              <a href="#sql-zona" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">🗃️ Base de Datos SQL</a>
+              <a href="#inst-zona" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">🚀 Instalación</a>
+              <a href="#cmd-zona" class="px-3 py-1.5 rounded-md font-display text-[9px] tracking-[0.5px] text-white/50 hover:text-white transition-all">🔐 Comandos</a>
             </nav>
           </div>
         </aside>
 
-        <!-- MAIN ARTICLE CONTENT -->
-        <article class="min-w-0 flex-1 max-w-[760px]" id="inicio">
+        <!-- MAIN ARTICLE CONTENT WRAPPER -->
+        <div class="min-w-0 flex-1 max-w-[760px]">
 
-          <!-- HEADER CARD -->
-          <header class="rounded-[14px] p-6 sm:p-7 mb-8" style="background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:4px;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
-            <div class="flex flex-wrap items-center gap-2 mb-3">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)">
-                <span class="font-display text-[8px] font-bold tracking-[1px] uppercase text-white/70">QBox / QBX</span>
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)">
-                <span class="font-display text-[8px] font-bold tracking-[1px] uppercase text-white/70">ESX</span>
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)">
-                <span class="font-display text-[8px] font-bold tracking-[1px] uppercase text-white/70">QBCore</span>
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md font-mono text-[10px]" style="background:rgba(16,185,129,0.08);color:var(--cx-green);border:1px solid rgba(16,185,129,0.2)">
-                v1.0.0
-              </span>
-            </div>
+          <!-- ========================================== -->
+          <!-- SCRIPT 1: KAID-ILLEGALSOG                  -->
+          <!-- ========================================== -->
+          <article class="script-content active" id="article-kaid-illegalsog">
 
-            <h1 class="font-display font-black text-[30px] sm:text-[38px] leading-[1.05] text-chrome">
-              kaid-illegalsog
-            </h1>
-            <p class="text-[14px] text-white/60 mt-3 leading-relaxed max-w-[580px]">
-              Sistema completo e inmersivo de amarre, soga y colgamiento para FiveM. Permite maniatar opositores o colgarse en estructuras elevadas con soporte automático para múltiples frameworks e inventarios.
-            </p>
-
-            <div class="flex flex-wrap gap-3 mt-6">
-              <a href="https://kaidstore.tebex.io" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-[10px] font-display text-[11px] font-bold tracking-[1.5px] uppercase transition-all" style="background:var(--cx-red);color:#fff;box-shadow:0 8px 30px rgba(239,68,68,0.35)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-                Comprar en Tebex
-              </a>
-            </div>
-          </header>
-
-          <!-- 1. REQUIREMENTS SECTION -->
-          <section id="requisitos" class="scroll-mt-28 mb-12">
-            <div class="flex items-center gap-2.5 mb-2">
-              <span style="color:var(--cx-red)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              </span>
-              <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">1. Requisitos</h2>
-            </div>
-            <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
-
-            <p class="text-[14px] leading-relaxed text-white/65 my-3">
-              Antes de arrancar o utilizar este recurso, verifica que tu servidor cuente con las siguientes dependencias activas:
-            </p>
-
-            <ul class="flex flex-col gap-2.5 my-4">
-              <li class="flex items-start gap-3">
-                <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
-                <span class="text-[13.5px] leading-relaxed text-white/65">
-                  <a href="https://github.com/overextended/ox_lib" target="_blank" class="text-white font-semibold underline underline-offset-4 decoration-red-500/40 hover:decoration-red-500">ox_lib</a>: Debe estar instalado y asegurado <strong>antes</strong> de este recurso.
+            <!-- HEADER CARD -->
+            <header class="rounded-[14px] p-6 sm:p-7 mb-8" style="background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:4px;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
+              <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)">
+                  <span class="font-display text-[8px] font-bold tracking-[1px] uppercase text-white/70">QBox / QBX</span>
                 </span>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
-                <span class="text-[13.5px] leading-relaxed text-white/65">
-                  <strong>Framework compatible:</strong> QBX (<code>qbx_core</code>), QB-Core (<code>qb-core</code>) o ESX (<code>es_extended</code>).
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)">
+                  <span class="font-display text-[8px] font-bold tracking-[1px] uppercase text-white/70">ESX</span>
                 </span>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
-                <span class="text-[13.5px] leading-relaxed text-white/65">
-                  <strong>Inventario compatible:</strong> <code>ox_inventory</code>, <code>qb-inventory</code> o inventario legacy de ESX.
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)">
+                  <span class="font-display text-[8px] font-bold tracking-[1px] uppercase text-white/70">QBCore</span>
                 </span>
-              </li>
-            </ul>
-          </section>
-
-          <!-- 2 & 3. INSTALLATION SECTION -->
-          <section id="instalacion" class="scroll-mt-28 mb-12">
-            <div class="flex items-center gap-2.5 mb-2">
-              <span style="color:var(--cx-red)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              </span>
-              <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">2 & 3. Instalación</h2>
-            </div>
-            <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
-
-            <ul class="flex flex-col gap-2.5 my-4">
-              <li class="flex items-start gap-3">
-                <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
-                <span class="text-[13.5px] leading-relaxed text-white/65">Copia la carpeta <code>kaid-illegalsog</code> en el directorio <code>resources</code> de tu servidor FiveM.</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
-                <span class="text-[13.5px] leading-relaxed text-white/65">Añade el <code>ensure</code> a tu <code>server.cfg</code> asegurándote de colocar <code>ox_lib</code> primero:</span>
-              </li>
-            </ul>
-
-            <!-- CODE BLOCK (CUXIAL EXACT) -->
-            <div class="relative rounded-[10px] overflow-hidden my-4" style="background:#06060b;border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
-              <div class="flex items-center justify-between px-3.5 h-9" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
-                <span class="font-mono text-[10px] tracking-[1px] text-white/40 uppercase">server.cfg</span>
-                <button class="flex items-center gap-1.5 px-2 py-1 rounded-md font-display text-[8px] font-bold tracking-[1.5px] uppercase transition-all hover:text-white" style="color:rgba(255,255,255,0.45);background:transparent" onclick="copyCode(this)">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                  <span>Copiar</span>
-                </button>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md font-mono text-[10px]" style="background:rgba(16,185,129,0.08);color:var(--cx-green);border:1px solid rgba(16,185,129,0.2)">
+                  v1.0.0
+                </span>
               </div>
-              <pre class="p-3.5 overflow-x-auto"><code class="font-mono text-[12.5px] leading-relaxed text-white/80 whitespace-pre">ensure ox_lib
+
+              <h1 class="font-display font-black text-[30px] sm:text-[38px] leading-[1.05] text-chrome">
+                kaid-illegalsog
+              </h1>
+              <p class="text-[14px] text-white/60 mt-3 leading-relaxed max-w-[580px]">
+                Sistema completo e inmersivo de amarre, soga y colgamiento para FiveM. Permite maniatar opositores o colgarse en estructuras elevadas con soporte automático para múltiples frameworks e inventarios.
+              </p>
+
+              <div class="flex flex-wrap gap-3 mt-6">
+                <a href="https://kaidstore.tebex.io" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-[10px] font-display text-[11px] font-bold tracking-[1.5px] uppercase transition-all" style="background:var(--cx-red);color:#fff;box-shadow:0 8px 30px rgba(239,68,68,0.35)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                  Comprar en Tebex
+                </a>
+              </div>
+            </header>
+
+            <!-- 1. REQUIREMENTS SECTION -->
+            <section id="req-illegalsog" class="scroll-mt-28 mb-12">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span style="color:var(--cx-red)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </span>
+                <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">1. Requisitos</h2>
+              </div>
+              <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
+
+              <p class="text-[14px] leading-relaxed text-white/65 my-3">
+                Antes de arrancar o utilizar este recurso, verifica que tu servidor cuente con las siguientes dependencias activas:
+              </p>
+
+              <ul class="flex flex-col gap-2.5 my-4">
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65">
+                    <a href="https://github.com/overextended/ox_lib" target="_blank" class="text-white font-semibold underline underline-offset-4 decoration-red-500/40 hover:decoration-red-500">ox_lib</a>: Debe estar instalado y asegurado <strong>antes</strong> de este recurso.
+                  </span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65">
+                    <strong>Framework compatible:</strong> QBX (<code>qbx_core</code>), QB-Core (<code>qb-core</code>) o ESX (<code>es_extended</code>).
+                  </span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65">
+                    <strong>Inventario compatible:</strong> <code>ox_inventory</code>, <code>qb-inventory</code> o inventario legacy de ESX.
+                  </span>
+                </li>
+              </ul>
+            </section>
+
+            <!-- 2 & 3. INSTALLATION SECTION -->
+            <section id="inst-illegalsog" class="scroll-mt-28 mb-12">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span style="color:var(--cx-red)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </span>
+                <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">2 & 3. Instalación</h2>
+              </div>
+              <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
+
+              <ul class="flex flex-col gap-2.5 my-4">
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65">Copia la carpeta <code>kaid-illegalsog</code> en el directorio <code>resources</code> de tu servidor FiveM.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65">Añade el <code>ensure</code> a tu <code>server.cfg</code> asegurándote de colocar <code>ox_lib</code> primero:</span>
+                </li>
+              </ul>
+
+              <div class="relative rounded-[10px] overflow-hidden my-4" style="background:#06060b;border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
+                <div class="flex items-center justify-between px-3.5 h-9" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
+                  <span class="font-mono text-[10px] tracking-[1px] text-white/40 uppercase">server.cfg</span>
+                  <button class="flex items-center gap-1.5 px-2 py-1 rounded-md font-display text-[8px] font-bold tracking-[1.5px] uppercase transition-all hover:text-white" style="color:rgba(255,255,255,0.45);background:transparent" onclick="copyCode(this)">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+                <pre class="p-3.5 overflow-x-auto"><code class="font-mono text-[12.5px] leading-relaxed text-white/80 whitespace-pre">ensure ox_lib
 ensure kaid-illegalsog</code></pre>
-            </div>
-          </section>
-
-          <!-- 4. INVENTORY ITEM SECTION -->
-          <section id="inventario" class="scroll-mt-28 mb-12">
-            <div class="flex items-center gap-2.5 mb-2">
-              <span style="color:var(--cx-red)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-              </span>
-              <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">4. Añadir el item "rope" al Inventario</h2>
-            </div>
-            <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
-
-            <p class="text-[14px] leading-relaxed text-white/65 my-3">
-              Abre el archivo de items de tu inventario e inserta el bloque correspondiente según tu sistema:
-            </p>
-
-            <ul class="flex flex-col gap-2.5 my-4">
-              <li class="flex items-start gap-3">
-                <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
-                <span class="text-[13.5px] leading-relaxed text-white/65"><strong>ox_inventory:</strong> <code>ox_inventory/data/items.lua</code></span>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
-                <span class="text-[13.5px] leading-relaxed text-white/65"><strong>qb-inventory / qb-core:</strong> <code>qb-core/shared/items.lua</code> o <code>qb-inventory/data/items.lua</code></span>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
-                <span class="text-[13.5px] leading-relaxed text-white/65"><strong>ESX legacy inventory:</strong> Ejecuta el insert SQL en la tabla <code>items</code>.</span>
-              </li>
-            </ul>
-
-            <!-- ITEM CARD PREVIEW -->
-            <div class="flex items-center gap-4 p-4 rounded-[12px] my-5" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);outline:1px dashed rgba(255,255,255,0.05);outline-offset:3px">
-              <img src="rope.png" alt="Rope Item" class="w-14 h-14 object-contain filter drop-shadow-[0_0_12px_rgba(239,68,68,0.3)]">
-              <div>
-                <div class="font-display text-[12px] font-bold tracking-[1px] text-white">rope.png</div>
-                <div class="text-[12.5px] text-white/50 mt-0.5">Copia esta imagen en la carpeta <code>images/</code> o <code>html/images/</code> de tu inventario.</div>
               </div>
-            </div>
+            </section>
 
-            <!-- OX INVENTORY CODE -->
-            <div class="relative rounded-[10px] overflow-hidden my-4" style="background:#06060b;border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
-              <div class="flex items-center justify-between px-3.5 h-9" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
-                <span class="font-mono text-[10px] tracking-[1px] text-white/40 uppercase">ox_inventory/data/items.lua</span>
-                <button class="flex items-center gap-1.5 px-2 py-1 rounded-md font-display text-[8px] font-bold tracking-[1.5px] uppercase transition-all hover:text-white" style="color:rgba(255,255,255,0.45);background:transparent" onclick="copyCode(this)">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                  <span>Copiar</span>
-                </button>
+            <!-- 4. INVENTORY ITEM SECTION -->
+            <section id="item-illegalsog" class="scroll-mt-28 mb-12">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span style="color:var(--cx-red)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                </span>
+                <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">4. Añadir el item "rope" al Inventario</h2>
               </div>
-              <pre class="p-3.5 overflow-x-auto"><code class="font-mono text-[12px] leading-relaxed text-white/80 whitespace-pre">['rope'] = {
+              <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
+
+              <p class="text-[14px] leading-relaxed text-white/65 my-3">
+                Abre el archivo de items de tu inventario e inserta el bloque correspondiente según tu sistema:
+              </p>
+
+              <div class="flex items-center gap-4 p-4 rounded-[12px] my-5" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);outline:1px dashed rgba(255,255,255,0.05);outline-offset:3px">
+                <img src="rope.png" alt="Rope Item" class="w-14 h-14 object-contain filter drop-shadow-[0_0_12px_rgba(239,68,68,0.3)]">
+                <div>
+                  <div class="font-display text-[12px] font-bold tracking-[1px] text-white">rope.png</div>
+                  <div class="text-[12.5px] text-white/50 mt-0.5">Copia esta imagen en la carpeta <code>images/</code> o <code>html/images/</code> de tu inventario.</div>
+                </div>
+              </div>
+
+              <!-- OX INVENTORY CODE -->
+              <div class="relative rounded-[10px] overflow-hidden my-4" style="background:#06060b;border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
+                <div class="flex items-center justify-between px-3.5 h-9" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
+                  <span class="font-mono text-[10px] tracking-[1px] text-white/40 uppercase">ox_inventory/data/items.lua</span>
+                  <button class="flex items-center gap-1.5 px-2 py-1 rounded-md font-display text-[8px] font-bold tracking-[1.5px] uppercase transition-all hover:text-white" style="color:rgba(255,255,255,0.45);background:transparent" onclick="copyCode(this)">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+                <pre class="p-3.5 overflow-x-auto"><code class="font-mono text-[12px] leading-relaxed text-white/80 whitespace-pre">['rope'] = {
     label = 'Rope',
     weight = 250,
     stack = true,
@@ -286,18 +306,18 @@ ensure kaid-illegalsog</code></pre>
         image = 'rope.png',
     },
 },</code></pre>
-            </div>
-
-            <!-- QB INVENTORY CODE -->
-            <div class="relative rounded-[10px] overflow-hidden my-4" style="background:#06060b;border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
-              <div class="flex items-center justify-between px-3.5 h-9" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
-                <span class="font-mono text-[10px] tracking-[1px] text-white/40 uppercase">qb-core/shared/items.lua</span>
-                <button class="flex items-center gap-1.5 px-2 py-1 rounded-md font-display text-[8px] font-bold tracking-[1.5px] uppercase transition-all hover:text-white" style="color:rgba(255,255,255,0.45);background:transparent" onclick="copyCode(this)">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                  <span>Copiar</span>
-                </button>
               </div>
-              <pre class="p-3.5 overflow-x-auto"><code class="font-mono text-[12px] leading-relaxed text-white/80 whitespace-pre">['rope'] = {
+
+              <!-- QB INVENTORY CODE -->
+              <div class="relative rounded-[10px] overflow-hidden my-4" style="background:#06060b;border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
+                <div class="flex items-center justify-between px-3.5 h-9" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
+                  <span class="font-mono text-[10px] tracking-[1px] text-white/40 uppercase">qb-core/shared/items.lua</span>
+                  <button class="flex items-center gap-1.5 px-2 py-1 rounded-md font-display text-[8px] font-bold tracking-[1.5px] uppercase transition-all hover:text-white" style="color:rgba(255,255,255,0.45);background:transparent" onclick="copyCode(this)">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+                <pre class="p-3.5 overflow-x-auto"><code class="font-mono text-[12px] leading-relaxed text-white/80 whitespace-pre">['rope'] = {
     ['name'] = 'rope',
     ['label'] = 'Rope',
     ['weight'] = 250,
@@ -309,161 +329,367 @@ ensure kaid-illegalsog</code></pre>
     ['combinable'] = nil,
     ['description'] = 'A sturdy rope, useful for tying someone up.',
 },</code></pre>
-            </div>
-
-            <!-- ESX SQL CODE -->
-            <div class="relative rounded-[10px] overflow-hidden my-4" style="background:#06060b;border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
-              <div class="flex items-center justify-between px-3.5 h-9" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
-                <span class="font-mono text-[10px] tracking-[1px] text-white/40 uppercase">ESX Database SQL</span>
-                <button class="flex items-center gap-1.5 px-2 py-1 rounded-md font-display text-[8px] font-bold tracking-[1.5px] uppercase transition-all hover:text-white" style="color:rgba(255,255,255,0.45);background:transparent" onclick="copyCode(this)">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                  <span>Copiar</span>
-                </button>
               </div>
-              <pre class="p-3.5 overflow-x-auto"><code class="font-mono text-[12px] leading-relaxed text-white/80 whitespace-pre">INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`)
+
+              <!-- ESX SQL CODE -->
+              <div class="relative rounded-[10px] overflow-hidden my-4" style="background:#06060b;border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
+                <div class="flex items-center justify-between px-3.5 h-9" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
+                  <span class="font-mono text-[10px] tracking-[1px] text-white/40 uppercase">ESX Database SQL</span>
+                  <button class="flex items-center gap-1.5 px-2 py-1 rounded-md font-display text-[8px] font-bold tracking-[1.5px] uppercase transition-all hover:text-white" style="color:rgba(255,255,255,0.45);background:transparent" onclick="copyCode(this)">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+                <pre class="p-3.5 overflow-x-auto"><code class="font-mono text-[12px] leading-relaxed text-white/80 whitespace-pre">INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`)
 VALUES ('rope', 'Rope', 250, 0, 1);</code></pre>
-            </div>
-          </section>
-
-          <!-- 5. CONFIGURATION SECTION -->
-          <section id="configuracion" class="scroll-mt-28 mb-12">
-            <div class="flex items-center gap-2.5 mb-2">
-              <span style="color:var(--cx-red)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-              </span>
-              <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">5. Configuración (config.lua)</h2>
-            </div>
-            <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
-
-            <p class="text-[14px] leading-relaxed text-white/65 my-3">
-              Abre <code>config.lua</code> en la raíz del script para personalizar el comportamiento:
-            </p>
-
-            <div class="rounded-[10px] overflow-hidden my-4" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
-              <table class="w-full text-left border-collapse">
-                <thead>
-                  <tr style="border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02)">
-                    <th class="p-3.5 font-display text-[9px] font-bold uppercase tracking-[1.5px] text-white/50">Variable</th>
-                    <th class="p-3.5 font-display text-[9px] font-bold uppercase tracking-[1.5px] text-white/50">Opciones / Descripción</th>
-                  </tr>
-                </thead>
-                <tbody class="text-[13px] text-white/70">
-                  <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
-                    <td class="p-3.5 font-mono text-[12px] text-red-400">Config.Framework</td>
-                    <td class="p-3.5"><code>'auto'</code>, <code>'qbx'</code>, <code>'qb'</code> o <code>'esx'</code></td>
-                  </tr>
-                  <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
-                    <td class="p-3.5 font-mono text-[12px] text-red-400">Config.Inventory</td>
-                    <td class="p-3.5"><code>'auto'</code>, <code>'ox_inventory'</code>, <code>'qb-inventory'</code> o <code>'esx_inventory'</code></td>
-                  </tr>
-                  <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
-                    <td class="p-3.5 font-mono text-[12px] text-red-400">Config.Locale</td>
-                    <td class="p-3.5"><code>'en'</code> (English, default) o <code>'es'</code> (Español)</td>
-                  </tr>
-                  <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
-                    <td class="p-3.5 font-mono text-[12px] text-red-400">Config.Commands</td>
-                    <td class="p-3.5">Nombres de comandos (<code>tie</code>, <code>release</code>, <code>hangSelf</code>)</td>
-                  </tr>
-                  <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
-                    <td class="p-3.5 font-mono text-[12px] text-red-400">Config.RopeItem</td>
-                    <td class="p-3.5">Nombre del item requerido para amarrar (por defecto <code>'rope'</code>)</td>
-                  </tr>
-                  <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
-                    <td class="p-3.5 font-mono text-[12px] text-red-400">Config.RequireRopeItem</td>
-                    <td class="p-3.5"><code>true</code> / <code>false</code> — Exigir el item para atar</td>
-                  </tr>
-                  <tr>
-                    <td class="p-3.5 font-mono text-[12px] text-red-400">Config.RemoveRopeOnUse</td>
-                    <td class="p-3.5"><code>true</code> / <code>false</code> — Consumir o gastar la cuerda al usarse</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- CUXIAL ALERT CALLOUT -->
-            <div class="flex items-start gap-3 p-3.5 rounded-[10px] my-4" style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.3)">
-              <svg class="shrink-0 mt-0.5 text-red-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-              <div class="text-[13px] leading-relaxed text-white/70">
-                <strong>Consejo:</strong> Dejar <code>Config.Framework</code> e <code>Config.Inventory</code> en <code>'auto'</code> funciona sin problemas en prácticamente todos los servidores FiveM.
               </div>
-            </div>
-          </section>
+            </section>
 
-          <!-- 6. RESTART SECTION -->
-          <section id="reinicio" class="scroll-mt-28 mb-12">
-            <div class="flex items-center gap-2.5 mb-2">
-              <span style="color:var(--cx-red)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
-              </span>
-              <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">6. Reiniciar el Recurso</h2>
-            </div>
-            <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
-
-            <div class="relative rounded-[10px] overflow-hidden my-4" style="background:#06060b;border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
-              <div class="flex items-center justify-between px-3.5 h-9" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
-                <span class="font-mono text-[10px] tracking-[1px] text-white/40 uppercase">Consola del Servidor</span>
-                <button class="flex items-center gap-1.5 px-2 py-1 rounded-md font-display text-[8px] font-bold tracking-[1.5px] uppercase transition-all hover:text-white" style="color:rgba(255,255,255,0.45);background:transparent" onclick="copyCode(this)">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                  <span>Copiar</span>
-                </button>
+            <!-- 5. CONFIGURATION SECTION -->
+            <section id="cfg-illegalsog" class="scroll-mt-28 mb-12">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span style="color:var(--cx-red)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </span>
+                <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">5. Configuración (config.lua)</h2>
               </div>
-              <pre class="p-3.5 overflow-x-auto"><code class="font-mono text-[12.5px] leading-relaxed text-white/80 whitespace-pre">restart kaid-illegalsog</code></pre>
-            </div>
-          </section>
+              <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
 
-          <!-- 7. COMMANDS SECTION -->
-          <section id="comandos" class="scroll-mt-28 mb-12">
-            <div class="flex items-center gap-2.5 mb-2">
-              <span style="color:var(--cx-red)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-              </span>
-              <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">7. Comandos por Defecto</h2>
-            </div>
-            <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
+              <div class="rounded-[10px] overflow-hidden my-4" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02)">
+                      <th class="p-3.5 font-display text-[9px] font-bold uppercase tracking-[1.5px] text-white/50">Variable</th>
+                      <th class="p-3.5 font-display text-[9px] font-bold uppercase tracking-[1.5px] text-white/50">Opciones / Descripción</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-[13px] text-white/70">
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+                      <td class="p-3.5 font-mono text-[12px] text-red-400">Config.Framework</td>
+                      <td class="p-3.5"><code>'auto'</code>, <code>'qbx'</code>, <code>'qb'</code> o <code>'esx'</code></td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+                      <td class="p-3.5 font-mono text-[12px] text-red-400">Config.Inventory</td>
+                      <td class="p-3.5"><code>'auto'</code>, <code>'ox_inventory'</code>, <code>'qb-inventory'</code> o <code>'esx_inventory'</code></td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+                      <td class="p-3.5 font-mono text-[12px] text-red-400">Config.Locale</td>
+                      <td class="p-3.5"><code>'en'</code> (default) o <code>'es'</code></td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+                      <td class="p-3.5 font-mono text-[12px] text-red-400">Config.Commands</td>
+                      <td class="p-3.5">Nombres de comandos (<code>tie</code>, <code>release</code>, <code>hangSelf</code>)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+                      <td class="p-3.5 font-mono text-[12px] text-red-400">Config.RopeItem</td>
+                      <td class="p-3.5">Item requerido (por defecto <code>'rope'</code>)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+                      <td class="p-3.5 font-mono text-[12px] text-red-400">Config.RequireRopeItem</td>
+                      <td class="p-3.5"><code>true</code> / <code>false</code></td>
+                    </tr>
+                    <tr>
+                      <td class="p-3.5 font-mono text-[12px] text-red-400">Config.RemoveRopeOnUse</td>
+                      <td class="p-3.5"><code>true</code> / <code>false</code></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
 
-            <div class="rounded-[10px] overflow-hidden my-4" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
-              <table class="w-full text-left border-collapse">
-                <thead>
-                  <tr style="border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02)">
-                    <th class="p-3.5 font-display text-[9px] font-bold uppercase tracking-[1.5px] text-white/50">Comando</th>
-                    <th class="p-3.5 font-display text-[9px] font-bold uppercase tracking-[1.5px] text-white/50">Efecto / Acción</th>
-                  </tr>
-                </thead>
-                <tbody class="text-[13px] text-white/70">
-                  <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
-                    <td class="p-3.5 font-mono text-[12px] text-red-400 font-bold">/amarrar</td>
-                    <td class="p-3.5">Amarra al jugador más cercano y lo cuelga de un techo, viga o estructura elevada.</td>
-                  </tr>
-                  <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
-                    <td class="p-3.5 font-mono text-[12px] text-red-400 font-bold">/soltar</td>
-                    <td class="p-3.5">Libera o cancela el colgamiento actual del jugador que está atado.</td>
-                  </tr>
-                  <tr>
-                    <td class="p-3.5 font-mono text-[12px] text-red-400 font-bold">/colgarse</td>
-                    <td class="p-3.5">Acción para colgarse uno mismo de la superficie o techo superior.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p class="text-[12.5px] text-white/40 italic">
-              * Los tres nombres de comando pueden cambiarse en <code>config.lua</code> en la sección <code>Config.Commands</code>.
-            </p>
-          </section>
+            <!-- 7. COMMANDS SECTION -->
+            <section id="cmd-illegalsog" class="scroll-mt-28 mb-12">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span style="color:var(--cx-red)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                </span>
+                <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">7. Comandos por Defecto</h2>
+              </div>
+              <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
 
-        </article>
+              <div class="rounded-[10px] overflow-hidden my-4" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02)">
+                      <th class="p-3.5 font-display text-[9px] font-bold uppercase tracking-[1.5px] text-white/50">Comando</th>
+                      <th class="p-3.5 font-display text-[9px] font-bold uppercase tracking-[1.5px] text-white/50">Efecto / Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-[13px] text-white/70">
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+                      <td class="p-3.5 font-mono text-[12px] text-red-400 font-bold">/amarrar</td>
+                      <td class="p-3.5">Amarra al jugador más cercano y lo cuelga de un techo o viga elevada.</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+                      <td class="p-3.5 font-mono text-[12px] text-red-400 font-bold">/soltar</td>
+                      <td class="p-3.5">Libera o cancela el colgamiento actual del jugador que está atado.</td>
+                    </tr>
+                    <tr>
+                      <td class="p-3.5 font-mono text-[12px] text-red-400 font-bold">/colgarse</td>
+                      <td class="p-3.5">Acción para colgarse uno mismo de la superficie o techo superior.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
 
-        <!-- RIGHT TOC ASIDE (EXACT CUXIAL TOC) -->
+          </article>
+
+
+          <!-- ========================================== -->
+          <!-- SCRIPT 2: KAIDZONA                         -->
+          <!-- ========================================== -->
+          <article class="script-content" id="article-kaidzona">
+
+            <!-- HEADER CARD -->
+            <header class="rounded-[14px] p-6 sm:p-7 mb-8" style="background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:4px;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
+              <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)">
+                  <span class="font-display text-[8px] font-bold tracking-[1px] uppercase text-white/70">QBCore</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)">
+                  <span class="font-display text-[8px] font-bold tracking-[1px] uppercase text-white/70">Build 3095+</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md font-mono text-[10px]" style="background:rgba(16,185,129,0.08);color:var(--cx-green);border:1px solid rgba(16,185,129,0.2)">
+                  v1.0.0
+                </span>
+              </div>
+
+              <h1 class="font-display font-black text-[30px] sm:text-[38px] leading-[1.05] text-chrome">
+                🛡️ Kaidzona
+              </h1>
+              <p class="text-[14px] text-white/60 mt-3 leading-relaxed max-w-[580px]">
+                Sistema profesional y completo de Safe Zones poligonales para FiveM. Crea y gestiona zonas seguras 100% personalizables en tiempo real sin reiniciar el servidor.
+              </p>
+
+              <div class="flex flex-wrap gap-3 mt-6">
+                <a href="https://www.youtube.com/watch?v=VZQ8m6GGJ5g" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-[10px] font-display text-[11px] font-bold tracking-[1.5px] uppercase transition-all" style="background:var(--cx-red);color:#fff;box-shadow:0 8px 30px rgba(239,68,68,0.35)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                  Ver Video Demostración
+                </a>
+                <a href="https://discord.gg/ash64UmRj5" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] font-display text-[11px] font-bold tracking-[1.5px] uppercase transition-all" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff">
+                  Discord Soporte
+                </a>
+              </div>
+            </header>
+
+            <!-- DEMO SECTION -->
+            <section id="demo-zona" class="scroll-mt-28 mb-12">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span style="color:var(--cx-red)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                </span>
+                <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">🎬 Video Demostración</h2>
+              </div>
+              <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
+
+              <div class="p-4 rounded-[12px] my-4" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);outline:1px dashed rgba(255,255,255,0.05);outline-offset:3px">
+                <p class="text-[13.5px] text-white/70 mb-3">
+                  Mira el funcionamiento en tiempo real, la creación de puntos en el mapa y la interfaz intuitiva:
+                </p>
+                <a href="https://www.youtube.com/watch?v=VZQ8m6GGJ5g" target="_blank" class="inline-flex items-center gap-2 text-red-400 hover:text-red-300 font-semibold text-[13px] underline underline-offset-4">
+                  👉 Ver demostración completa en YouTube (https://www.youtube.com/watch?v=VZQ8m6GGJ5g)
+                </a>
+              </div>
+            </section>
+
+            <!-- FEATURES SECTION -->
+            <section id="features-zona" class="scroll-mt-28 mb-12">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span style="color:var(--cx-red)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </span>
+                <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">🛡️ ¿Qué incluye Kaidzona?</h2>
+              </div>
+              <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                
+                <div class="p-4 rounded-[10px]" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08)">
+                  <div class="font-display text-[11px] font-bold text-white mb-2">🗺️ Creación de Zonas</div>
+                  <ul class="text-[12.5px] text-white/60 flex flex-col gap-1.5">
+                    <li>• Zonas poligonales libres con N puntos en el mapa.</li>
+                    <li>• Sin límite de zonas independientes.</li>
+                    <li>• Guardado automático en base de datos MySQL.</li>
+                  </ul>
+                </div>
+
+                <div class="p-4 rounded-[10px]" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08)">
+                  <div class="font-display text-[11px] font-bold text-white mb-2">🛡️ Protección Anti-VDM</div>
+                  <ul class="text-[12.5px] text-white/60 flex flex-col gap-1.5">
+                    <li>• Invencibilidad total dentro del área.</li>
+                    <li>• Desactiva colisión con vehículos (radio 40m).</li>
+                    <li>• Wanted level eliminado automáticamente.</li>
+                  </ul>
+                </div>
+
+                <div class="p-4 rounded-[10px]" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08)">
+                  <div class="font-display text-[11px] font-bold text-white mb-2">🔫 Bloqueo de Combate</div>
+                  <ul class="text-[12.5px] text-white/60 flex flex-col gap-1.5">
+                    <li>• Bloqueo de disparos, apuntar y combate cuerpo a cuerpo.</li>
+                    <li>• Desarmado automático de armas en mano.</li>
+                    <li>• Bloqueo de más de 12 controles de combate.</li>
+                  </ul>
+                </div>
+
+                <div class="p-4 rounded-[10px]" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08)">
+                  <div class="font-display text-[11px] font-bold text-white mb-2">🚗 Límite de Velocidad & UI</div>
+                  <ul class="text-[12.5px] text-white/60 flex flex-col gap-1.5">
+                    <li>• Límite en km/h configurable por zona (0 = ilimitado).</li>
+                    <li>• TextUI moderno personalizable (color HEX + 24 iconos).</li>
+                    <li>• Panel de administración in-game con ox_lib.</li>
+                  </ul>
+                </div>
+
+              </div>
+            </section>
+
+            <!-- REQUIREMENTS -->
+            <section id="req-zona" class="scroll-mt-28 mb-12">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span style="color:var(--cx-red)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </span>
+                <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">⚙️ Requisitos Previos</h2>
+              </div>
+              <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
+
+              <ul class="flex flex-col gap-2.5 my-4">
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65"><strong>ox_lib</strong> — Menús de contexto, notificaciones y TextUI.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65"><strong>oxmysql</strong> — Conexión y persistencia en base de datos.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65"><strong>qb-core</strong> — Framework base del servidor.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65"><strong>FiveM Build 3095+</strong></span>
+                </li>
+              </ul>
+            </section>
+
+            <!-- SQL TABLE -->
+            <section id="sql-zona" class="scroll-mt-28 mb-12">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span style="color:var(--cx-red)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                </span>
+                <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">🗃️ Base de Datos SQL</h2>
+              </div>
+              <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
+
+              <p class="text-[14px] leading-relaxed text-white/65 my-3">
+                Ejecuta esta única tabla en tu base de datos MySQL / MariaDB:
+              </p>
+
+              <div class="relative rounded-[10px] overflow-hidden my-4" style="background:#06060b;border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
+                <div class="flex items-center justify-between px-3.5 h-9" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
+                  <span class="font-mono text-[10px] tracking-[1px] text-white/40 uppercase">kaidzona_table.sql</span>
+                  <button class="flex items-center gap-1.5 px-2 py-1 rounded-md font-display text-[8px] font-bold tracking-[1.5px] uppercase transition-all hover:text-white" style="color:rgba(255,255,255,0.45);background:transparent" onclick="copyCode(this)">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+                <pre class="p-3.5 overflow-x-auto"><code class="font-mono text-[12px] leading-relaxed text-white/80 whitespace-pre">CREATE TABLE IF NOT EXISTS `kaidzona_zones` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `label` VARCHAR(100) NOT NULL DEFAULT 'SafeZone',
+  `points` LONGTEXT NOT NULL,
+  `settings` LONGTEXT NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</code></pre>
+              </div>
+            </section>
+
+            <!-- INSTALLATION -->
+            <section id="inst-zona" class="scroll-mt-28 mb-12">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span style="color:var(--cx-red)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </span>
+                <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">🚀 Pasos de Instalación</h2>
+              </div>
+              <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
+
+              <ul class="flex flex-col gap-2.5 my-4">
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65">Copia la carpeta <code>Kaidzona</code> dentro de la carpeta <code>resources</code> de tu servidor.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65">Ejecuta el script SQL en tu base de datos.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65">Agrega <code>ensure Kaidzona</code> en tu <code>server.cfg</code> después de <code>ox_lib</code> y <code>oxmysql</code>.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="shrink-0 mt-[7px] w-[5px] h-[5px] rounded-full" style="background:var(--cx-red);box-shadow:0 0 6px var(--cx-red)"></span>
+                  <span class="text-[13.5px] leading-relaxed text-white/65">Configura tu licencia en <code>config/config.lua</code> y usa el comando <code>/kaidzona</code> en el servidor.</span>
+                </li>
+              </ul>
+            </section>
+
+            <!-- COMMANDS & PERMISSIONS -->
+            <section id="cmd-zona" class="scroll-mt-28 mb-12">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span style="color:var(--cx-red)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </span>
+                <h2 class="font-display text-[15px] font-bold tracking-[1px] uppercase text-white/90">🔐 Permisos y Comandos</h2>
+              </div>
+              <div class="h-px w-full mb-4" style="background:linear-gradient(to right, rgba(239,68,68,0.3), rgba(255,255,255,0.04) 40%, transparent)"></div>
+
+              <div class="rounded-[10px] overflow-hidden my-4" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.1);outline:1px dashed rgba(255,255,255,0.06);outline-offset:3px">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02)">
+                      <th class="p-3.5 font-display text-[9px] font-bold uppercase tracking-[1.5px] text-white/50">Comando</th>
+                      <th class="p-3.5 font-display text-[9px] font-bold uppercase tracking-[1.5px] text-white/50">Permisos / Detalle</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-[13px] text-white/70">
+                    <tr>
+                      <td class="p-3.5 font-mono text-[12px] text-red-400 font-bold">/kaidzona</td>
+                      <td class="p-3.5">Abre el menú de administración y creación de zonas. Requiere grupo <code>admin</code> o licencia configurada en el <code>config.lua</code>.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+          </article>
+
+        </div>
+
+        <!-- RIGHT TOC ASIDE (DYNAMIC BASED ON SCRIPT) -->
         <aside class="hidden xl:block w-[180px] shrink-0">
           <div class="sticky top-28">
             <div class="font-display text-[8px] font-bold tracking-[2px] uppercase text-white/30 mb-3 px-3">
               En esta página
             </div>
-            <nav class="flex flex-col gap-0.5">
-              <a href="#requisitos" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2" style="color:#fff;border-color:var(--cx-red);background:rgba(239,68,68,0.05)">1. Requisitos</a>
-              <a href="#instalacion" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2" style="color:rgba(255,255,255,0.4);border-color:transparent;background:transparent">2. Instalación</a>
-              <a href="#inventario" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2" style="color:rgba(255,255,255,0.4);border-color:transparent;background:transparent">3. Item Cuerda</a>
-              <a href="#configuracion" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2" style="color:rgba(255,255,255,0.4);border-color:transparent;background:transparent">4. Config</a>
-              <a href="#comandos" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2" style="color:rgba(255,255,255,0.4);border-color:transparent;background:transparent">5. Comandos</a>
+            <!-- TOC FOR SCRIPT 1 -->
+            <nav class="flex flex-col gap-0.5" id="right-toc-kaid-illegalsog">
+              <a href="#req-illegalsog" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2" style="color:#fff;border-color:var(--cx-red);background:rgba(239,68,68,0.05)">1. Requisitos</a>
+              <a href="#inst-illegalsog" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2 text-white/40 border-transparent hover:text-white">2. Instalación</a>
+              <a href="#item-illegalsog" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2 text-white/40 border-transparent hover:text-white">3. Item Cuerda</a>
+              <a href="#cfg-illegalsog" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2 text-white/40 border-transparent hover:text-white">4. Config</a>
+              <a href="#cmd-illegalsog" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2 text-white/40 border-transparent hover:text-white">5. Comandos</a>
+            </nav>
+            <!-- TOC FOR SCRIPT 2 -->
+            <nav class="flex flex-col gap-0.5" id="right-toc-kaidzona" style="display:none;">
+              <a href="#demo-zona" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2" style="color:#fff;border-color:var(--cx-red);background:rgba(239,68,68,0.05)">🎬 Demostración</a>
+              <a href="#features-zona" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2 text-white/40 border-transparent hover:text-white">🛡️ Características</a>
+              <a href="#req-zona" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2 text-white/40 border-transparent hover:text-white">⚙️ Requisitos</a>
+              <a href="#sql-zona" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2 text-white/40 border-transparent hover:text-white">🗃️ Base de Datos</a>
+              <a href="#inst-zona" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2 text-white/40 border-transparent hover:text-white">🚀 Instalación</a>
+              <a href="#cmd-zona" class="px-3 py-1.5 rounded-md font-display text-[10px] tracking-[0.5px] transition-all border-l-2 text-white/40 border-transparent hover:text-white">🔐 Comandos</a>
             </nav>
           </div>
         </aside>
@@ -489,6 +715,7 @@ VALUES ('rope', 'Rope', 250, 0, 1);</code></pre>
   </footer>
 
   <script>
+    // Copy code block function
     function copyCode(btn) {
       const pre = btn.closest('.relative').querySelector('pre code');
       if (!pre) return;
@@ -501,6 +728,75 @@ VALUES ('rope', 'Rope', 250, 0, 1);</code></pre>
         }, 2000);
       });
     }
+
+    // Tab switching between scripts
+    function switchScript(scriptId) {
+      // Articles
+      document.querySelectorAll('.script-content').forEach(el => el.classList.remove('active'));
+      const targetArticle = document.getElementById('article-' + scriptId);
+      if (targetArticle) targetArticle.classList.add('active');
+
+      // Update breadcrumb
+      const breadcrumb = document.getElementById('breadcrumb-title');
+      if (breadcrumb) {
+        breadcrumb.innerText = scriptId.toUpperCase();
+      }
+
+      // Nav link styling
+      const navIllegalsog = document.getElementById('nav-kaid-illegalsog');
+      const navKaidzona = document.getElementById('nav-kaidzona');
+
+      const iconIllegalsog = navIllegalsog.querySelector('.icon-holder');
+      const iconKaidzona = navKaidzona.querySelector('.icon-holder');
+      const textIllegalsog = navIllegalsog.querySelector('span.font-display');
+      const textKaidzona = navKaidzona.querySelector('span.font-display');
+
+      if (scriptId === 'kaid-illegalsog') {
+        navIllegalsog.style.background = 'rgba(239,68,68,0.08)';
+        navIllegalsog.style.border = '1px solid rgba(239,68,68,0.2)';
+        textIllegalsog.className = 'font-display text-[10px] font-bold tracking-[0.5px] leading-tight transition-colors text-white';
+        iconIllegalsog.outerHTML = '<span class="icon-holder" style="color:var(--cx-red)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></span>';
+
+        navKaidzona.style.background = 'transparent';
+        navKaidzona.style.border = '1px solid transparent';
+        textKaidzona.className = 'font-display text-[10px] font-bold tracking-[0.5px] leading-tight transition-colors text-white/50 group-hover:text-white';
+        const newIconKaidzona = navKaidzona.querySelector('.icon-holder');
+        newIconKaidzona.outerHTML = '<span class="icon-holder w-[5px] h-[5px] rounded-full shrink-0" style="background:rgba(255,255,255,0.25);box-shadow:none"></span>';
+
+        // TOCs
+        document.getElementById('toc-kaid-illegalsog').style.display = 'flex';
+        document.getElementById('toc-kaidzona').style.display = 'none';
+        document.getElementById('right-toc-kaid-illegalsog').style.display = 'flex';
+        document.getElementById('right-toc-kaidzona').style.display = 'none';
+      } else {
+        navKaidzona.style.background = 'rgba(239,68,68,0.08)';
+        navKaidzona.style.border = '1px solid rgba(239,68,68,0.2)';
+        textKaidzona.className = 'font-display text-[10px] font-bold tracking-[0.5px] leading-tight transition-colors text-white';
+        iconKaidzona.outerHTML = '<span class="icon-holder" style="color:var(--cx-red)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>';
+
+        navIllegalsog.style.background = 'transparent';
+        navIllegalsog.style.border = '1px solid transparent';
+        textIllegalsog.className = 'font-display text-[10px] font-bold tracking-[0.5px] leading-tight transition-colors text-white/50 group-hover:text-white';
+        const newIconIllegalsog = navIllegalsog.querySelector('.icon-holder');
+        newIconIllegalsog.outerHTML = '<span class="icon-holder w-[5px] h-[5px] rounded-full shrink-0" style="background:rgba(255,255,255,0.25);box-shadow:none"></span>';
+
+        // TOCs
+        document.getElementById('toc-kaid-illegalsog').style.display = 'none';
+        document.getElementById('toc-kaidzona').style.display = 'flex';
+        document.getElementById('right-toc-kaid-illegalsog').style.display = 'none';
+        document.getElementById('right-toc-kaidzona').style.display = 'flex';
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Check URL hash on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'kaidzona') {
+        switchScript('kaidzona');
+      }
+    });
   </script>
 </body>
 </html>
