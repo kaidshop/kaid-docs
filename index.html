@@ -1,872 +1,689 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAID STORE · Documentation</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --cx-red: #ef4444;
-            --cx-red-glow: rgba(239, 68, 68, 0.4);
-            --cx-red-subtle: rgba(239, 68, 68, 0.08);
-            --cx-green: #10b981;
-            --cx-amber: #f59e0b;
-            --cx-bg: #06060b;
-            --cx-surface: rgba(14, 14, 22, 0.85);
-            --cx-border: rgba(255, 255, 255, 0.1);
-            --cx-border-dashed: rgba(255, 255, 255, 0.06);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: var(--cx-bg);
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Cyberpunk Grid Background */
-        .cx-grid-bg {
-            position: fixed;
-            inset: 0;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .cx-radial-glow {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1000px;
-            height: 600px;
-            background: radial-gradient(ellipse at top, rgba(239, 68, 68, 0.12) 0%, rgba(239, 68, 68, 0.02) 50%, transparent 80%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* 1. FLOATING CAPSULE NAVBAR */
-        .cx-nav-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            padding: 16px 20px;
-            z-index: 100;
-            pointer-events: none;
-        }
-
-        .cx-navbar {
-            pointer-events: auto;
-            background: rgba(10, 10, 16, 0.85);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--cx-border);
-            outline: 1px dashed var(--cx-border-dashed);
-            outline-offset: 3px;
-            border-radius: 12px;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7);
-            height: 50px;
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            gap: 16px;
-            max-width: 1100px;
-            width: 100%;
-        }
-
-        .cx-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            padding-right: 14px;
-            border-right: 1px dashed rgba(255, 255, 255, 0.12);
-        }
-
-        .cx-brand img {
-            width: 26px;
-            height: 26px;
-            object-fit: contain;
-            filter: drop-shadow(0 0 10px var(--cx-red));
-        }
-
-        .cx-brand-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            font-weight: 900;
-            font-style: italic;
-            letter-spacing: 2px;
-            color: #fff;
-        }
-        .cx-brand-text span {
-            color: var(--cx-red);
-        }
-
-        .cx-nav-links {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            list-style: none;
-        }
-
-        .cx-nav-link {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.55);
-            text-decoration: none;
-            padding: 7px 12px;
-            border-radius: 6px;
-            transition: all 0.25s ease;
-        }
-
-        .cx-nav-link:hover, .cx-nav-link.active {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .cx-nav-link.active {
-            position: relative;
-        }
-        .cx-nav-link.active::after {
-            content: "";
-            position: absolute;
-            bottom: 3px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 2px;
-            background: var(--cx-red);
-            box-shadow: 0 0 6px var(--cx-red);
-            border-radius: 2px;
-        }
-
-        .cx-nav-right {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-left: 14px;
-            border-left: 1px dashed rgba(255, 255, 255, 0.12);
-        }
-
-        .cx-btn-store {
-            font-family: 'Outfit', sans-serif;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: #fff;
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.5);
-            padding: 6px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            transition: all 0.25s ease;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .cx-btn-store:hover {
-            background: var(--cx-red);
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.6);
-            transform: translateY(-1px);
-        }
-
-        /* 2. MAIN DOCS LAYOUT */
-        .cx-layout-container {
-            position: relative;
-            z-index: 2;
-            max-width: 1320px;
-            margin: 0 auto;
-            padding: 105px 24px 80px 24px;
-            display: flex;
-            gap: 36px;
-        }
-
-        /* Left Sidebar: Script Categories / List */
-        .cx-sidebar-left {
-            width: 250px;
-            shrink: 0;
-            position: sticky;
-            top: 95px;
-            height: fit-content;
-            max-height: calc(100vh - 120px);
-            overflow-y: auto;
-        }
-
-        .cx-sidebar-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.35);
-            margin-bottom: 14px;
-            padding-left: 10px;
-        }
-
-        .cx-doc-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            list-style: none;
-        }
-
-        .cx-menu-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 8px;
-            color: rgba(255, 255, 255, 0.55);
-            text-decoration: none;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.25s ease;
-            border: 1px solid transparent;
-            cursor: pointer;
-        }
-
-        .cx-menu-item:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-
-        .cx-menu-item.active {
-            color: #fff;
-            background: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.3);
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.15);
-        }
-
-        .cx-menu-dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transition: all 0.25s ease;
-        }
-
-        .cx-menu-item.active .cx-menu-dot {
-            background: var(--cx-red);
-            box-shadow: 0 0 8px var(--cx-red);
-        }
-
-        /* Center Content Area */
-        .cx-doc-content {
-            flex: 1;
-            min-width: 0;
-            max-width: 800px;
-        }
-
-        /* Script Header Banner */
-        .cx-script-hero {
-            background: rgba(14, 14, 22, 0.7);
-            border: 1px solid var(--cx-border);
-            outline: 1px dashed var(--cx-border-dashed);
-            outline-offset: 4px;
-            border-radius: 14px;
-            padding: 30px;
-            margin-bottom: 36px;
-            backdrop-filter: blur(16px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
-
-        .cx-tags-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
-
-        .cx-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
-        }
-
-        .cx-pill.version {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--cx-green);
-            border-color: rgba(16, 185, 129, 0.3);
-        }
-
-        .cx-pill.framework {
-            color: #fff;
-        }
-
-        .cx-script-title {
-            font-family: 'Orbitron', 'Impact', sans-serif;
-            font-size: 34px;
-            font-weight: 900;
-            font-style: italic;
-            letter-spacing: 2px;
-            color: #fff;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .cx-script-desc {
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            line-height: 1.6;
-            margin-bottom: 22px;
-        }
-
-        .cx-btn-download {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--cx-red);
-            color: #fff;
-            font-family: 'Outfit', sans-serif;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .cx-btn-download:hover {
-            background: #ff2a44;
-            box-shadow: 0 0 35px rgba(239, 68, 68, 0.7);
-            transform: translateY(-2px);
-        }
-
-        /* Section Block */
-        .cx-doc-section {
-            margin-bottom: 40px;
-            scroll-margin-top: 100px;
-        }
-
-        .cx-section-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .cx-section-icon {
-            color: var(--cx-red);
-            font-size: 14px;
-        }
-
-        .cx-section-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 15px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #ffffff;
-        }
-
-        .cx-divider {
-            height: 1px;
-            width: 100%;
-            background: linear-gradient(90deg, rgba(239, 68, 68, 0.4) 0%, rgba(255, 255, 255, 0.04) 40%, transparent 100%);
-            margin-bottom: 16px;
-        }
-
-        .cx-text {
-            font-size: 14px;
-            line-height: 1.7;
-            color: rgba(255, 255, 255, 0.65);
-            margin-bottom: 14px;
-        }
-
-        /* Info & Alert Callouts */
-        .cx-callout {
-            border-radius: 10px;
-            padding: 16px 18px;
-            margin: 18px 0;
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .cx-callout.alert {
-            background: rgba(239, 68, 68, 0.08);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: rgba(255, 255, 255, 0.85);
-        }
-        .cx-callout.alert i {
-            color: var(--cx-red);
-            margin-top: 2px;
-        }
-
-        .cx-callout.success {
-            background: rgba(16, 185, 129, 0.08);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: rgba(255, 255, 255, 0.85);
-        }
-        .cx-callout.success i {
-            color: var(--cx-green);
-            margin-top: 2px;
-        }
-
-        /* Spec / Info Cards */
-        .cx-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 14px;
-            margin: 20px 0;
-        }
-
-        .cx-stat-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            outline: 1px dashed rgba(255, 255, 255, 0.04);
-            outline-offset: 3px;
-            border-radius: 10px;
-            padding: 16px;
-        }
-
-        .cx-stat-card .label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.35);
-            margin-bottom: 6px;
-        }
-
-        .cx-stat-card .value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 17px;
-            font-weight: 800;
-            color: var(--cx-red);
-        }
-
-        /* Code Block */
-        .cx-code-block {
-            background: #08080f;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            outline: 1px dashed rgba(255, 255, 255, 0.06);
-            outline-offset: 3px;
-            border-radius: 10px;
-            margin: 18px 0;
-            overflow: hidden;
-        }
-
-        .cx-code-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 14px;
-            background: rgba(255, 255, 255, 0.03);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .cx-code-lang {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .cx-code-copy {
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.45);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-        .cx-code-copy:hover {
-            color: #fff;
-        }
-
-        pre {
-            padding: 16px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.85);
-            overflow-x: auto;
-        }
-
-        /* List Items */
-        .cx-step-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin: 16px 0;
-        }
-
-        .cx-step-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            font-size: 13.5px;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .cx-step-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--cx-red);
-            box-shadow: 0 0 8px var(--cx-red);
-            margin-top: 8px;
-            shrink: 0;
-        }
-
-        /* Right Table of Contents (On this page) */
-        .cx-sidebar-right {
-            width: 190px;
-            shrink: 0;
-            position: sticky;
-            top: 95px;
-            height: fit-content;
-        }
-
-        .cx-toc-links {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            list-style: none;
-            border-left: 2px solid rgba(255, 255, 255, 0.08);
-            padding-left: 12px;
-        }
-
-        .cx-toc-link {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.45);
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .cx-toc-link:hover, .cx-toc-link.active {
-            color: #fff;
-            transform: translateX(3px);
-        }
-        .cx-toc-link.active {
-            color: var(--cx-red);
-        }
-
-        /* Footer */
-        .cx-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 40px 20px;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .cx-footer-text {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.35);
-            letter-spacing: 1px;
-        }
-
-        @media (max-width: 1024px) {
-            .cx-sidebar-right {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .cx-layout-container {
-                flex-direction: column;
-            }
-            .cx-sidebar-left {
-                width: 100%;
-                position: static;
-            }
-            .cx-nav-links {
-                display: none;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KAID STORE — Documentación Oficial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg: #06060b;
+      --card-bg: rgba(14, 14, 23, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --red: #ef4444;
+      --red-glow: rgba(239, 68, 68, 0.35);
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --code-bg: #0b0b14;
+      --sidebar-w: 280px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(239, 68, 68, 0.15), transparent),
+        radial-gradient(circle at 100% 100%, rgba(239, 68, 68, 0.05), transparent 40%);
+      background-attachment: fixed;
+    }
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(6, 6, 11, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 100;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 1.15rem;
+      letter-spacing: 2px;
+      color: #fff;
+    }
+    .brand-title span { color: var(--red); }
+    .brand-tag {
+      font-size: 0.65rem;
+      color: var(--red);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+      color: white;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    }
+    .store-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+    }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--card-border);
+      color: #fff;
+      font-size: 1.2rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .docs-container {
+      display: flex;
+      margin-top: 70px;
+      min-height: calc(100vh - 70px);
+    }
+    .sidebar {
+      width: var(--sidebar-w);
+      background: rgba(8, 8, 14, 0.7);
+      border-right: 1px solid var(--card-border);
+      padding: 2rem 1.25rem;
+      position: fixed;
+      top: 70px;
+      bottom: 0;
+      overflow-y: auto;
+      backdrop-filter: blur(10px);
+      z-index: 90;
+    }
+    .sidebar-section-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 0.8rem;
+      padding-left: 0.75rem;
+    }
+    .sidebar-menu {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+    .sidebar-item {
+      margin-bottom: 4px;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+    .sidebar-link i {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .sidebar-link:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .sidebar-link.active {
+      color: #fff;
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.3);
+      font-weight: 600;
+    }
+    .sidebar-link.active i {
+      color: var(--red);
+    }
+    .badge-live {
+      margin-left: auto;
+      font-size: 0.65rem;
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .content-area {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 3rem 4rem;
+      max-width: 1050px;
+    }
+    .doc-header {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 1.5rem;
+    }
+    .doc-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 0.8rem;
+    }
+    .doc-breadcrumbs span { color: var(--red); }
+    .doc-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 0.6rem;
+    }
+    .doc-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .doc-section {
+      margin-bottom: 3rem;
+    }
+    .section-heading {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.35rem;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-heading i {
+      color: var(--red);
+      font-size: 1.1rem;
+    }
+    .doc-paragraph {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+    .doc-list {
+      list-style: none;
+      margin: 1rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .doc-list li {
+      position: relative;
+      padding-left: 26px;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .doc-list li::before {
+      content: "\f105";
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      left: 6px;
+      color: var(--red);
+    }
+    .doc-list a {
+      color: #ef4444;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .doc-list a:hover {
+      text-decoration: underline;
+    }
+    .code-wrapper {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      margin: 1.25rem 0;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .code-header {
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--card-border);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      color: #fff;
+      border-color: var(--red);
+      background: rgba(239, 68, 68, 0.1);
+    }
+    .code-content {
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: #f1f5f9;
+    }
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      margin: 1.25rem 0;
+      background: var(--card-bg);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    th {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 12px 18px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      color: #fff;
+      border-bottom: 1px solid var(--card-border);
+    }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 0.82em;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+    }
+    .item-showcase {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin: 1rem 0;
+    }
+    .item-img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.3));
+    }
+    .item-info {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .item-name {
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 2px;
+    }
+    @media (max-width: 900px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .content-area {
+        margin-left: 0;
+        padding: 2rem 1.25rem;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="cx-grid-bg"></div>
-    <div class="cx-radial-glow"></div>
-
-    <!-- Floating Capsule Navbar -->
-    <div class="cx-nav-wrapper">
-        <nav class="cx-navbar">
-            <a href="https://kaidstore.tebex.io/" class="cx-brand">
-                <img src="https://kaidstore.tebex.io/favicon.ico" alt="Kaid Store" onerror="this.src='https://i.imgur.com/8Q9Z5YF.png'">
-                <span class="cx-brand-text">KAID <span>DOCS</span></span>
-            </a>
-
-            <ul class="cx-nav-links">
-                <li><a href="https://kaidstore.tebex.io/" class="cx-nav-link">TIENDA</a></li>
-                <li><a href="#docs" class="cx-nav-link active">DOCS</a></li>
-                <li><a href="https://discord.gg/pPmHdjP8J6" target="_blank" class="cx-nav-link">DISCORD</a></li>
-                <li><a href="https://www.youtube.com/@kaidstore23" target="_blank" class="cx-nav-link">YOUTUBE</a></li>
-            </ul>
-
-            <div class="cx-nav-right">
-                <a href="https://kaidstore.tebex.io/" class="cx-btn-store">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span>VOLVER A TIENDA</span>
-                </a>
-            </div>
-        </nav>
+  <!-- TOP NAVIGATION -->
+  <nav class="top-nav">
+    <a href="#" class="brand">
+      <img src="logo.jpg" alt="KAID Logo" class="brand-logo">
+      <div class="brand-text">
+        <span class="brand-title">KAID <span>STORE</span></span>
+        <span class="brand-tag">DOCS &amp; GUIDES</span>
+      </div>
+    </a>
+    <div class="nav-actions">
+      <a href="https://kaidstore.tebex.io" target="_blank" class="store-btn">
+        <i class="fa-solid fa-cart-shopping"></i> TIENDA
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
     </div>
+  </nav>
 
-    <!-- Main Content Layout -->
-    <div class="cx-layout-container">
-        
-        <!-- Left Sidebar: Scripts Navigation -->
-        <aside class="cx-sidebar-left">
-            <div class="cx-sidebar-title">DOCUMENTACIÓN DE SCRIPTS</div>
-            <ul class="cx-doc-menu">
-                <li>
-                    <a class="cx-menu-item active" onclick="switchDoc('core')">
-                        <span class="cx-menu-dot"></span>
-                        <span>kaid_core</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="cx-menu-item" onclick="switchDoc('multicharacter')">
-                        <span class="cx-menu-dot"></span>
-                        <span>kaid_multicharacter</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="cx-menu-item" onclick="switchDoc('panel')">
-                        <span class="cx-menu-dot"></span>
-                        <span>kaid_panel</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="cx-menu-item" onclick="switchDoc('loading')">
-                        <span class="cx-menu-dot"></span>
-                        <span>kaid_loading</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="cx-menu-item" onclick="switchDoc('illegals')">
-                        <span class="cx-menu-dot"></span>
-                        <span>kaid_illegals</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
+  <!-- CONTAINER -->
+  <div class="docs-container">
 
-        <!-- Center Documentation Article -->
-        <main class="cx-doc-content" id="doc-content">
-            
-            <!-- Header Card -->
-            <header class="cx-script-hero">
-                <div class="cx-tags-row">
-                    <span class="cx-pill framework"><i class="fa-solid fa-server"></i> ESX</span>
-                    <span class="cx-pill framework"><i class="fa-solid fa-server"></i> QBCORE</span>
-                    <span class="cx-pill framework"><i class="fa-solid fa-server"></i> QBOX</span>
-                    <span class="cx-pill version">v1.0.0</span>
-                </div>
-                <h1 class="cx-script-title" id="script-title">kaid_core</h1>
-                <p class="cx-script-desc" id="script-desc">
-                    El núcleo compartido y optimizado para los recursos de Kaid Store. Permite compatibilidad transparente con ESX, QBCore y QBox sin tocar código fuente.
-                </p>
-                <a href="https://discord.gg/pPmHdjP8J6" target="_blank" class="cx-btn-download">
-                    <i class="fa-solid fa-download"></i>
-                    <span>DESCARGAR / DISCORD</span>
-                </a>
-            </header>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section-title">Scripts Disponibles</div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item">
+          <a href="#installation" class="sidebar-link active">
+            <i class="fa-solid fa-skull-crossbones"></i>
+            <span>kaid-illegalsog</span>
+            <span class="badge-live">v1.0</span>
+          </a>
+        </li>
+      </ul>
 
-            <!-- ¿Qué es? -->
-            <section id="que-es" class="cx-doc-section">
-                <div class="cx-section-header">
-                    <i class="fa-solid fa-circle-question cx-section-icon"></i>
-                    <h2 class="cx-section-title">¿Qué es?</h2>
-                </div>
-                <div class="cx-divider"></div>
-                <p class="cx-text">
-                    <strong>kaid_core</strong> es la librería central requerida por la mayoría de recursos de Kaid Store. Se encarga de gestionar llamadas NUI, callbacks seguros, sincronización de base de datos con OxMySQL y soporte multi-framework automático.
-                </p>
-                <div class="cx-callout alert">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    <div>
-                        <strong>Requisito Importante:</strong> Debe iniciarse antes de cualquier otro script de Kaid Store en tu <code>server.cfg</code>. De lo contrario, los módulos dependientes se detendrán.
-                    </div>
-                </div>
-            </section>
+      <div class="sidebar-section-title">Navegación Rápida</div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item"><a href="#requirements" class="sidebar-link"><i class="fa-solid fa-list-check"></i> 1. Requisitos</a></li>
+        <li class="sidebar-item"><a href="#installation" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i> 2-3. Instalación</a></li>
+        <li class="sidebar-item"><a href="#inventory-item" class="sidebar-link"><i class="fa-solid fa-boxes-stacked"></i> 4. Item de Cuerda</a></li>
+        <li class="sidebar-item"><a href="#configuration" class="sidebar-link"><i class="fa-solid fa-sliders"></i> 5. Configuración</a></li>
+        <li class="sidebar-item"><a href="#restart" class="sidebar-link"><i class="fa-solid fa-arrows-rotate"></i> 6. Reiniciar</a></li>
+        <li class="sidebar-item"><a href="#commands" class="sidebar-link"><i class="fa-solid fa-terminal"></i> 7. Comandos</a></li>
+      </ul>
+    </aside>
 
-            <!-- Información General / Especificaciones -->
-            <section id="especificaciones" class="cx-doc-section">
-                <div class="cx-section-header">
-                    <i class="fa-solid fa-microchip cx-section-icon"></i>
-                    <h2 class="cx-section-title">Especificaciones</h2>
-                </div>
-                <div class="cx-divider"></div>
-                <div class="cx-stats-grid">
-                    <div class="cx-stat-card">
-                        <div class="label">Resmon / Rendimiento</div>
-                        <div class="value">0.00ms</div>
-                    </div>
-                    <div class="cx-stat-card">
-                        <div class="label">Protección</div>
-                        <div class="value">Tebex Escrow</div>
-                    </div>
-                    <div class="cx-stat-card">
-                        <div class="label">Compatibilidad</div>
-                        <div class="value">ESX / QB / QBox</div>
-                    </div>
-                </div>
-            </section>
+    <!-- MAIN CONTENT -->
+    <main class="content-area">
+      <div class="doc-header">
+        <div class="doc-breadcrumbs">
+          <span>DOCUMENTACIÓN</span> / <span>SCRIPTS</span> / <span>KAID-ILLEGALSOG</span>
+        </div>
+        <h1 class="doc-title">kaid-illegalsog</h1>
+        <p class="doc-subtitle">Sistema completo e inmersivo de amarre y soga para FiveM. Permite maniatar opositores o colgarse en estructuras elevadas con soporte automático para múltiples frameworks e inventarios.</p>
+      </div>
 
-            <!-- Instalación -->
-            <section id="instalacion" class="cx-doc-section">
-                <div class="cx-section-header">
-                    <i class="fa-solid fa-box-archive cx-section-icon"></i>
-                    <h2 class="cx-section-title">Instalación</h2>
-                </div>
-                <div class="cx-divider"></div>
-                <ul class="cx-step-list">
-                    <li class="cx-step-item">
-                        <span class="cx-step-dot"></span>
-                        <span>Descarga el recurso desde tu panel de Keymaster de Tebex o desde nuestro Discord oficial.</span>
-                    </li>
-                    <li class="cx-step-item">
-                        <span class="cx-step-dot"></span>
-                        <span>Coloca la carpeta en tu directorio <code>resources/[kaid]/</code>. Asegúrate de no cambiar el nombre de la carpeta.</span>
-                    </li>
-                    <li class="cx-step-item">
-                        <span class="cx-step-dot"></span>
-                        <span>Abre tu archivo <code>server.cfg</code> y añade el orden de inicio correcto.</span>
-                    </li>
-                </ul>
+      <!-- 1. REQUIREMENTS -->
+      <section class="doc-section" id="requirements">
+        <h2 class="section-heading"><i class="fa-solid fa-circle-check"></i> 1. Requisitos Previos</h2>
+        <p class="doc-paragraph">Antes de arrancar o utilizar este recurso en tu servidor de FiveM, asegúrate de tener instaladas y activadas las siguientes dependencias:</p>
+        <ul class="doc-list">
+          <li><strong><a href="https://github.com/overextended/ox_lib" target="_blank">ox_lib</a></strong>: Debe estar instalado e iniciado <strong>antes</strong> de este script.</li>
+          <li><strong>Frameworks compatibles:</strong> <code>QBX (qbx_core)</code>, <code>QB-Core (qb-core)</code> o <code>ESX (es_extended)</code>.</li>
+          <li><strong>Inventarios compatibles:</strong> <code>ox_inventory</code>, <code>qb-inventory</code> o <code>ESX legacy inventory</code>.</li>
+        </ul>
+      </section>
 
-                <div class="cx-code-block">
-                    <div class="cx-code-header">
-                        <span class="cx-code-lang">server.cfg</span>
-                        <button class="cx-code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
-                    </div>
-                    <pre><code># Dependencias básicas
-ensure ox_lib
-ensure oxmysql
+      <!-- 2 & 3. INSTALLATION -->
+      <section class="doc-section" id="installation">
+        <h2 class="section-heading"><i class="fa-solid fa-download"></i> 2 &amp; 3. Instalación en el Servidor</h2>
+        <p class="doc-paragraph"><strong>Paso 1:</strong> Copia la carpeta <code>kaid-illegalsog</code> dentro del directorio <code>resources</code> de tu servidor.</p>
+        <p class="doc-paragraph"><strong>Paso 2:</strong> En tu archivo <code>server.cfg</code>, asegúrate de asegurar <code>ox_lib</code> antes que este recurso:</p>
 
-# Kaid Store Core (Debe ir primero)
-ensure kaid_core
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>server.cfg</span>
+            <button class="copy-btn" onclick="copyText(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+          </div>
+          <pre class="code-content">ensure ox_lib
+ensure kaid-illegalsog</pre>
+        </div>
+      </section>
 
-# Tus scripts de Kaid Store
-ensure kaid_multicharacter
-ensure kaid_panel</code></pre>
-                </div>
+      <!-- 4. INVENTORY ITEM -->
+      <section class="doc-section" id="inventory-item">
+        <h2 class="section-heading"><i class="fa-solid fa-box-open"></i> 4. Añadir el item "rope" a tu Inventario</h2>
+        <p class="doc-paragraph">Copia el bloque correspondiente a tu inventario dentro de su respectivo archivo de definición de items:</p>
+        <ul class="doc-list">
+          <li><strong>ox_inventory:</strong> <code>ox_inventory/data/items.lua</code></li>
+          <li><strong>qb-inventory / qb-core:</strong> <code>qb-core/shared/items.lua</code> o <code>qb-inventory/data/items.lua</code></li>
+          <li><strong>ESX legacy:</strong> Ejecutar la consulta SQL en la tabla <code>items</code>.</li>
+        </ul>
 
-                <div class="cx-callout success">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <div>
-                        ¡Listo! Una vez configurado en el server.cfg, reinicia tu servidor FiveM para aplicar los cambios de forma permanente.
-                    </div>
-                </div>
-            </section>
+        <p class="doc-paragraph">Y copia la imagen <code>rope.png</code> a la carpeta de imágenes de tu inventario:</p>
+        <ul class="doc-list">
+          <li><strong>ox_inventory:</strong> <code>ox_inventory/web/images/rope.png</code></li>
+          <li><strong>qb-inventory:</strong> <code>qb-inventory/html/images/rope.png</code></li>
+          <li><strong>ESX legacy:</strong> <code>inventory_images/images/rope.png</code> (o la carpeta de tu recurso de imágenes)</li>
+        </ul>
 
-        </main>
+        <div class="item-showcase">
+          <img src="rope.png" alt="Rope Item" class="item-img">
+          <div class="item-info">
+            <div class="item-name">Item: rope.png</div>
+            <div>Icono transparente de alta calidad incluido en el script.</div>
+          </div>
+        </div>
 
-        <!-- Right Table of Contents -->
-        <aside class="cx-sidebar-right">
-            <div class="cx-sidebar-title">EN ESTA PÁGINA</div>
-            <ul class="cx-toc-links">
-                <li><a href="#que-es" class="cx-toc-link active">¿Qué es?</a></li>
-                <li><a href="#especificaciones" class="cx-toc-link">Especificaciones</a></li>
-                <li><a href="#instalacion" class="cx-toc-link">Instalación</a></li>
-            </ul>
-        </aside>
+        <!-- OX INVENTORY -->
+        <p class="doc-paragraph" style="margin-top: 1.5rem;"><strong>Configuración para OX_INVENTORY:</strong></p>
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>ox_inventory/data/items.lua</span>
+            <button class="copy-btn" onclick="copyText(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+          </div>
+          <pre class="code-content">['rope'] = {
+    label = 'Rope',
+    weight = 250,
+    stack = true,
+    close = true,
+    description = 'A sturdy rope, useful for tying someone up.',
+    client = {
+        image = 'rope.png',
+    },
+},</pre>
+        </div>
 
-    </div>
+        <!-- QB INVENTORY -->
+        <p class="doc-paragraph" style="margin-top: 1.5rem;"><strong>Configuración para QB-INVENTORY:</strong></p>
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>qb-core/shared/items.lua</span>
+            <button class="copy-btn" onclick="copyText(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+          </div>
+          <pre class="code-content">['rope'] = {
+    ['name'] = 'rope',
+    ['label'] = 'Rope',
+    ['weight'] = 250,
+    ['type'] = 'item',
+    ['image'] = 'rope.png',
+    ['unique'] = false,
+    ['useable'] = false,
+    ['shouldClose'] = true,
+    ['combinable'] = nil,
+    ['description'] = 'A sturdy rope, useful for tying someone up.',
+},</pre>
+        </div>
 
-    <!-- Footer -->
-    <footer class="cx-footer">
-        <p class="cx-footer-text">© 2026 KAID STORE. Documentation System. Crafted with precision for FiveM servers.</p>
-    </footer>
+        <!-- ESX SQL -->
+        <p class="doc-paragraph" style="margin-top: 1.5rem;"><strong>Consulta SQL para ESX LEGACY:</strong></p>
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>SQL Database</span>
+            <button class="copy-btn" onclick="copyText(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+          </div>
+          <pre class="code-content">INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`)
+VALUES ('rope', 'Rope', 250, 0, 1);</pre>
+        </div>
+      </section>
 
-    <script>
-        function copyCode(btn) {
-            const code = btn.closest('.cx-code-block').querySelector('code').innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copiado';
-                setTimeout(() => {
-                    btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar';
-                }, 2000);
-            });
-        }
+      <!-- 5. CONFIGURATION -->
+      <section class="doc-section" id="configuration">
+        <h2 class="section-heading"><i class="fa-solid fa-sliders"></i> 5. Configuración (config.lua)</h2>
+        <p class="doc-paragraph">Abre el archivo <code>config.lua</code> en la raíz del recurso para ajustar las propiedades deseadas:</p>
 
-        // Simple switcher for demo scripts
-        function switchDoc(id) {
-            document.querySelectorAll('.cx-menu-item').forEach(el => el.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            
-            const title = document.getElementById('script-title');
-            const desc = document.getElementById('script-desc');
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Ajuste</th>
+                <th>Descripción y Valores Disponibles</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Config.Framework</code></td>
+                <td><code>'auto'</code>, <code>'qbx'</code>, <code>'qb'</code> o <code>'esx'</code></td>
+              </tr>
+              <tr>
+                <td><code>Config.Inventory</code></td>
+                <td><code>'auto'</code>, <code>'ox_inventory'</code>, <code>'qb-inventory'</code> o <code>'esx_inventory'</code></td>
+              </tr>
+              <tr>
+                <td><code>Config.Locale</code></td>
+                <td><code>'en'</code> (English, por defecto) o <code>'es'</code> (Español)</td>
+              </tr>
+              <tr>
+                <td><code>Config.Commands</code></td>
+                <td>Nombres de los comandos (<code>tie</code>, <code>release</code>, <code>hangSelf</code>)</td>
+              </tr>
+              <tr>
+                <td><code>Config.RopeItem</code></td>
+                <td>Nombre del item requerido para amarrar (por defecto <code>'rope'</code>)</td>
+              </tr>
+              <tr>
+                <td><code>Config.RequireRopeItem</code></td>
+                <td><code>true</code> / <code>false</code> — Exigir tener la cuerda en inventario para usar el comando</td>
+              </tr>
+              <tr>
+                <td><code>Config.RemoveRopeOnUse</code></td>
+                <td><code>true</code> / <code>false</code> — Consumir o gastar la cuerda al utilizarse</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="doc-paragraph"><i class="fa-solid fa-lightbulb" style="color: #ef4444;"></i> <em>Nota: Mantener <code>Config.Framework</code> y <code>Config.Inventory</code> en <code>'auto'</code> detecta automáticamente el framework y el inventario en casi el 100% de los servidores.</em></p>
+      </section>
 
-            if (id === 'core') {
-                title.innerText = 'kaid_core';
-                desc.innerText = 'El núcleo compartido y optimizado para los recursos de Kaid Store. Permite compatibilidad transparente con ESX, QBCore y QBox sin tocar código fuente.';
-            } else if (id === 'multicharacter') {
-                title.innerText = 'kaid_multicharacter';
-                desc.innerText = 'Sistema de selección de personajes cinematográfico con animaciones fluidas, sonido inmersivo y soporte para hasta 5 slots personalizables.';
-            } else if (id === 'panel') {
-                title.innerText = 'kaid_panel';
-                desc.innerText = 'Panel administrativo y de usuario moderno con interfaz oscura, logs detallados y control total sobre el servidor FiveM.';
-            } else if (id === 'loading') {
-                title.innerText = 'kaid_loading';
-                desc.innerText = 'Pantalla de carga futurista con música, barra interactiva de descarga de assets y fondo animado Cyberpunk.';
-            } else if (id === 'illegals') {
-                title.innerText = 'kaid_illegals';
-                desc.innerText = 'Sistema integral de actividades ilícitas, zonas de control, drops y misiones sincronizadas con cero lag (0.00ms idle).';
-            }
-        }
-    </script>
+      <!-- 6. RESTART RESOURCE -->
+      <section class="doc-section" id="restart">
+        <h2 class="section-heading"><i class="fa-solid fa-arrows-rotate"></i> 6. Reiniciar el Recurso</h2>
+        <p class="doc-paragraph">En la consola de tu servidor o mediante RCON ejecuta:</p>
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>Server Console</span>
+            <button class="copy-btn" onclick="copyText(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+          </div>
+          <pre class="code-content">restart kaid-illegalsog</pre>
+        </div>
+        <p class="doc-paragraph">Verás una línea de confirmación en la consola del servidor indicando el framework y el inventario detectados con éxito.</p>
+      </section>
+
+      <!-- 7. COMMANDS -->
+      <section class="doc-section" id="commands">
+        <h2 class="section-heading"><i class="fa-solid fa-terminal"></i> 7. Comandos por Defecto</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Comando</th>
+                <th>Acción / Efecto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>/amarrar</code></td>
+                <td>Amarra al jugador más cercano y lo cuelga de un techo, viga o estructura elevada.</td>
+              </tr>
+              <tr>
+                <td><code>/soltar</code></td>
+                <td>Libera o cancela el colgamiento actual del jugador amarrado.</td>
+              </tr>
+              <tr>
+                <td><code>/colgarse</code></td>
+                <td>Acción de colgarse uno mismo del techo o estructura superior.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="doc-paragraph"><em>Los 3 comandos pueden renombrarse a tu gusto en <code>config.lua</code> bajo <code>Config.Commands</code>.</em></p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function copyText(btn) {
+      const code = btn.closest('.code-wrapper').querySelector('.code-content').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copiado!';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+        }, 2000);
+      });
+    }
+
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+      });
+    }
+  </script>
 </body>
 </html>
